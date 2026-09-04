@@ -13953,6 +13953,22 @@ public class MessagesController extends BaseController implements NotificationCe
             }
             return true;
         }
+        // Фільтрація: видаляємо оновлення з 400+ архівних каналів до початку їх обробки
+if (updates != null) {
+    for (int a = updates.size() - 1; a >= 0; a--) {
+        TLRPC.Update update = updates.get(a);
+        long peerId = getPeerIdFromUpdate(update);
+        if (peerId != 0) {
+            int folderId = getDialogFolderId(peerId);
+            TLRPC.Chat chat = getChat(-peerId);
+            
+            // Якщо це канал і він в Архіві (folder_id == 1) — видаляємо зі списку
+            if (folderId == 1 && chat != null && chat.broadcast) {
+                updates.remove(a);
+            }
+        }
+    }
+}і
         long currentTime = System.currentTimeMillis();
         boolean printChanged = false;
 
