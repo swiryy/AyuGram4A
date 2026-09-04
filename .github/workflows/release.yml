@@ -1,28 +1,3 @@
-name: Build release APK
-on:
-  push:
-    branches:
-      - main
-    tags:
-      - 'v*'
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    env:
-      CCACHE_COMPILERCHECK: "%compiler% -dumpmachine; %compiler% -dumpversion"
-      CCACHE_NOHASHDIR: "true"
-      CCACHE_MAXSIZE: "10G"
-      CCACHE_HARDLINK: "true"
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: false
-          fetch-depth: 0
-
-      - name: Checkout submodules
-        run: git submodule update --init --recursive || true
-
       - name: Create API keys file
         uses: DamianReeves/write-file-action@master
         with:
@@ -36,12 +11,3 @@ jobs:
             SIGNING_KEY_ALIAS = ${{ secrets.CERT_KEY }}
             SIGNING_KEY_STORE_PASSWORD = ${{ secrets.CERT_KEY }}
           write-mode: overwrite
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          java-version: '11'
-          distribution: 'temurin'
-
-      - name: Build APK
-        run: ./gradlew assembleRelease
