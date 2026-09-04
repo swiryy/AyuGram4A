@@ -13953,7 +13953,7 @@ public class MessagesController extends BaseController implements NotificationCe
             }
             return true;
         }
-        // Фільтрація: видаляємо оновлення з 400+ архівних каналів до початку їх обробки
+        // Фільтрація: видаляємо оновлення з 400+ архівних каналів до початку їх обробкиі
 if (updates != null) {
     for (int a = updates.size() - 1; a >= 0; a--) {
         TLRPC.Update update = updates.get(a);
