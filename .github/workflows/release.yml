@@ -10,7 +10,7 @@ jobs:
       CCACHE_NOHASHDIR: "true"
       CCACHE_MAXSIZE: "10G"
       CCACHE_HARDLINK: "true"
-   steps:
+    steps:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
