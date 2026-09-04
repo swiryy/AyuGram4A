@@ -10755,4 +10755,24 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
     public boolean allowToScale() {
         return !isDrawerTransition || !ExteraConfig.alternativeOpenAnimation;
     }
+    // SwiryGram: Масове виділення всіх чатів у вибраній папці
+public void selectAllChatsInFolder(int folderId) {
+    ArrayList<TLRPC.Dialog> folderDialogs = getMessagesController().getDialogs(folderId);
+    if (folderDialogs != null && !folderDialogs.isEmpty()) {
+        for (int a = 0; a < folderDialogs.size(); a++) {
+            TLRPC.Dialog dialog = folderDialogs.get(a);
+            if (dialog != null && selectedDialogs != null) {
+                // Додаємо ID чату в масив виділених
+                selectedDialogs.put(dialog.id, dialog);
+            }
+        }
+        // Оновлюємо лічильник виділених чатів у верхній панелі
+        if (actionBar != null) {
+            updateSelectedCount();
+        }
+        if (dialogsAdapter != null) {
+            dialogsAdapter.notifyDataSetChanged();
+        }
+    }
+}
 }
