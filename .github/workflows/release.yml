@@ -10,13 +10,11 @@ jobs:
       CCACHE_NOHASHDIR: "true"
       CCACHE_MAXSIZE: "10G"
       CCACHE_HARDLINK: "true"
-    steps:
+   steps:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
           fetch-depth: 0
-        token: ${{ secrets.GH_TOKEN }}
-
       - uses: DamianReeves/write-file-action@master
         with:
           path: ./API_KEYS
