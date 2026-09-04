@@ -9789,9 +9789,25 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             }
         } else {
             if (delegate != null) {
-                ArrayList<MessagesStorage.TopicKey> dids = new ArrayList<>();
-                dids.add(MessagesStorage.TopicKey.of(dialogId, topicId));
-                boolean res = delegate.didSelectDialogs(DialogsActivity.this, dids, null, param, topicsFragment);
+              ArrayList<MessagesStorage.TopicKey> dids = new ArrayList<>();
+if (selectedDialogs != null && selectedDialogs.size() > 0) {
+    int delayMs = 0;
+    for (int a = 0; a < selectedDialogs.size(); a++) {
+        long currentDialogId = selectedDialogs.keyAt(a);
+        new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+            ArrayList<MessagesStorage.TopicKey> singleDid = new ArrayList<>();
+            singleDid.add(MessagesStorage.TopicKey.of(currentDialogId, 0));
+            if (delegate != null) {
+                delegate.didSelectDialogs(DialogsActivity.this, singleDid, null, param, topicsFragment);
+            }
+        }, delayMs);
+        delayMs += 2000; // Пауза 2 секунди між кожним чатом
+    }
+    boolean res = true;
+} else {
+    dids.add(MessagesStorage.TopicKey.of(dialogId, topicId));
+    boolean res = delegate.didSelectDialogs(DialogsActivity.this, dids, null, param, topicsFragment);
+}
                 if (res && resetDelegate) {
                     delegate = null;
                 }
